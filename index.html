@@ -39,7 +39,7 @@ const ADULT_EXTRA = {
 for (const [category, pairs] of Object.entries(ADULT_EXTRA)) BANK[category].push(...pairs);
 const allPairsByCategory = Object.fromEntries(Object.entries(BANK).map(([category,pairs])=>[category,pairs.slice()]));
 const allPairs = Object.entries(allPairsByCategory).flatMap(([category,pairs])=>pairs.map(pair=>({category,pair})));
-const KIDS_PAIRS = allPairs.slice(0,100);
+const KIDS_PAIRS = Object.entries(allPairsByCategory).flatMap(([category,pairs])=>pairs.slice(0,17).map(pair=>({category,pair}))).slice(0,100);
 const ADULT_PAIRS = allPairs.slice(0,300);
 const $=id=>document.getElementById(id);let names=[],scores=[],round=1,spyIds=[],pair=null,topic='',current=0,revealCount=0,votes=-1,roles=[],roundsPlayed=0,lastSection='result',eliminated=[];
 function renderNames(){const n=+$('count').value;const old=[...document.querySelectorAll('.nameInput')].map(x=>x.value);$('names').innerHTML='';for(let i=0;i<n;i++){const inp=document.createElement('input');inp.className='nameInput';inp.maxLength=12;inp.placeholder=`玩家${i+1}`;inp.value=old[i]||`玩家${i+1}`;$('names').append(inp)}}
