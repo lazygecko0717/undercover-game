@@ -89,8 +89,6 @@ function startJazzMusic(){const ctx=getAudioContext();if(!ctx||!musicEnabled)ret
 function stopJazzMusic(){if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null}}
 function playButtonSound(){const ctx=getAudioContext();if(!ctx)return;const now=ctx.currentTime;playTone(880,now,.075,.035,'triangle');playTone(1174.66,now+.035,.085,.018,'sine')}
 function toggleMusic(){musicEnabled=!musicEnabled;$('musicToggle').textContent=musicEnabled?'♫ 音樂：開':'♫ 音樂：關';if(musicEnabled)startJazzMusic();else stopJazzMusic()}
-$('musicToggle').addEventListener('click',toggleMusic);
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.id==='musicToggle'||b.disabled)return;playButtonSound()},true);
 
 const BANK={
 '地點':[['遊樂園','動物園'],['圖書館','書店'],['游泳池','海水浴場'],['火車站','捷運站'],['夜市','百貨公司'],['醫院','診所'],['電影院','劇院'],['博物館','美術館']],
@@ -117,7 +115,9 @@ const allPairsByCategory = Object.fromEntries(Object.entries(BANK).map(([categor
 const allPairs = Object.entries(allPairsByCategory).flatMap(([category,pairs])=>pairs.map(pair=>({category,pair})));
 const KIDS_PAIRS = Object.entries(allPairsByCategory).flatMap(([category,pairs])=>pairs.slice(0,17).map(pair=>({category,pair}))).slice(0,100);
 const ADULT_PAIRS = allPairs.slice(0,300);
-const $=id=>document.getElementById(id);let names=[],scores=[],round=1,spyIds=[],pair=null,topic='',current=0,firstPlayer=0,revealCount=0,votes=-1,roles=[],roundsPlayed=0,lastSection='result',eliminated=[],scoreReturnSection='reveal',ballotVoters=[],ballotIndex=0,ballotChoices={},ballotCandidates=[],voteCounts=[],voteStage='collect',discussionTimer=null,discussionStartedAt=0,pendingBallotCandidates=null;
+const $=id=>document.getElementById(id);
+$('musicToggle').addEventListener('click',toggleMusic);
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.id==='musicToggle'||b.disabled)return;playButtonSound()},true);let names=[],scores=[],round=1,spyIds=[],pair=null,topic='',current=0,firstPlayer=0,revealCount=0,votes=-1,roles=[],roundsPlayed=0,lastSection='result',eliminated=[],scoreReturnSection='reveal',ballotVoters=[],ballotIndex=0,ballotChoices={},ballotCandidates=[],voteCounts=[],voteStage='collect',discussionTimer=null,discussionStartedAt=0,pendingBallotCandidates=null;
 function renderNames(){const n=+$('count').value;const old=[...document.querySelectorAll('.nameInput')].map(x=>x.value);$('names').innerHTML='';for(let i=0;i<n;i++){const inp=document.createElement('input');inp.className='nameInput';inp.maxLength=12;inp.placeholder=`玩家${i+1}`;inp.value=old[i]||`玩家${i+1}`;$('names').append(inp)}}
 function openNameModal(){$('nameModal').classList.remove('hidden');const first=$('names').querySelector('input');if(first)first.focus()}
 function closeNameModal(){$('nameModal').classList.add('hidden')}
