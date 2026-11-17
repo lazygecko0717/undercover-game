@@ -35,7 +35,7 @@ API 金鑰**不可**放進 `index.html`、GitHub repository、遊戲設定欄或
 ## 安全與費用
 
 - Worker 僅允許目前 GitHub Pages 網域的瀏覽器跨來源呼叫；CORS 本身不是完整的身分驗證。
-- 上線前，請在 Cloudflare 為 Worker 設定每 IP 的速率限制／防濫用規則。
+- 上線前，請在 Cloudflare 為 Worker 設定每 IP 的速率限制／防濫用規則；若使用 Worker Rate Limiting binding，名稱設為 `GAME_LIMITER`，程式會自動套用。
 - 在 OpenAI API Platform 設定用量通知與支出上限，並定期檢查用量。
 - API 金鑰與付款帳戶應由成年帳戶管理者保管。
 - AI 會盡量產生難度與類別相符的詞語，但仍可能偶爾產生不理想配對；Worker 會檢查基本格式，遊戲主持人可在發牌前決定是否重抽。
