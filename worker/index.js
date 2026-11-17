@@ -35,6 +35,12 @@ export default {
     if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
     if (!env.OPENAI_API_KEY) return json({ error: "Worker 尚未設定 OPENAI_API_KEY" }, 503);
 
+    if (env.GAME_LIMITER) {
+      const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+      const limit = await env.GAME_LIMITER.limit({ key: ip });
+      if (!limit.success) return json({ error: "請求太頻繁，請稍後再試。" }, 429);
+    }
+
     let body;
     try { body = await request.json(); }
     catch { return json({ error: "請求格式不是有效 JSON" }, 400); }
@@ -88,8 +94,6 @@ export default {
                   pair: {
                     type: "array",
                     items: { type: "string" },
-                    minItems: 2,
-                    maxItems: 2
                   }
                 },
                 required: ["pair"],
